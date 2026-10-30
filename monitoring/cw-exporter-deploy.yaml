@@ -1,0 +1,32 @@
+# cw-exporter-deploy.yaml
+# deployment automation
+# Maintained by: Platform Engineering
+
+# cw-exporter-deploy.yaml — deployment automation
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudwatch-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudwatch-exporter
+  template:
+    metadata:
+      labels:
+        app: cloudwatch-exporter
+    spec:
+      containers:
+      - name: cloudwatch-exporter
+        image: 444444444444.dkr.ecr.eu-west-1.amazonaws.com/cloudwatch-prometheus-exporter:0.2
+        ports:
+        - containerPort: 9106
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: cloudwatch-exporter-config

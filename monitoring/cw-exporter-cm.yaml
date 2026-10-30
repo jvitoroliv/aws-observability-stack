@@ -1,0 +1,66 @@
+# cw-exporter-cm.yaml
+# cw-exporter-cm configuration
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudwatch-exporter-config
+data:
+  config.yml: |
+    ---
+    region: eu-west-1
+    aws_access_key_id: <AWS_ACCESS_KEY_ID>
+    aws_secret_access_key: <AWS_SECRET_ACCESS_KEY>
+    metrics:
+    - aws_namespace: AWS/DynamoDB
+      aws_metric_name: ProvisionedReadCapacityUnits
+      aws_dimensions: [TableName]
+      aws_dimension_select:
+        TableName: [
+          "monitoring-acquiring-load-table-AcquirerLoadTable-XXXXXXXXXXXX",
+          "monitoring-events-table-MonitoringEventsTable-XXXXXXXXXXXXX",
+          "monitoring-issuer-payment-table-IssuerPaymentTable-XXXXXXXXXXXX",
+          "monitoring-payment-provider-txn-table-PaymentProviderTransactionsTable-XXXXXXXXXXXX",
+          "monitoring-pnw-withdrawal-table-PnwWithdrawalTable-XXXXXXXXXXXX",
+          "monitoring-results-table-MonitoringResultsTable-XXXXXXXXXXXXX"
+        ]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/DynamoDB
+      aws_metric_name: ProvisionedWriteCapacityUnits
+      aws_dimensions: [TableName]
+      aws_dimension_select:
+        TableName: [
+          "monitoring-acquiring-load-table-AcquirerLoadTable-XXXXXXXXXXXX",
+          "monitoring-events-table-MonitoringEventsTable-XXXXXXXXXXXXX",
+          "monitoring-issuer-payment-table-IssuerPaymentTable-XXXXXXXXXXXX",
+          "monitoring-payment-provider-txn-table-PaymentProviderTransactionsTable-XXXXXXXXXXXX",
+          "monitoring-pnw-withdrawal-table-PnwWithdrawalTable-XXXXXXXXXXXX",
+          "monitoring-results-table-MonitoringResultsTable-XXXXXXXXXXXXX"
+        ]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/DynamoDB
+      aws_metric_name: ConsumedReadCapacityUnits
+      aws_dimensions: [TableName]
+      aws_dimension_select:
+        TableName: [
+          "monitoring-acquiring-load-table-AcquirerLoadTable-XXXXXXXXXXXX",
+          "monitoring-events-table-MonitoringEventsTable-XXXXXXXXXXXXX",
+          "monitoring-issuer-payment-table-IssuerPaymentTable-XXXXXXXXXXXX",
+          "monitoring-payment-provider-txn-table-PaymentProviderTransactionsTable-XXXXXXXXXXXX",
+          "monitoring-pnw-withdrawal-table-PnwWithdrawalTable-XXXXXXXXXXXX",
+          "monitoring-results-table-MonitoringResultsTable-XXXXXXXXXXXXX"
+        ]
+      aws_statistics: [Sum]
+    - aws_namespace: AWS/DynamoDB
+      aws_metric_name: ConsumedWriteCapacityUnits
+      aws_dimensions: [TableName]
+      aws_dimension_select:
+        TableName: [
+          "monitoring-acquiring-load-table-AcquirerLoadTable-XXXXXXXXXXXX",
+          "monitoring-events-table-MonitoringEventsTable-XXXXXXXXXXXXX",
+          "monitoring-issuer-payment-table-IssuerPaymentTable-XXXXXXXXXXXX",
+          "monitoring-payment-provider-txn-table-PaymentProviderTransactionsTable-XXXXXXXXXXXX",
+          "monitoring-pnw-withdrawal-table-PnwWithdrawalTable-XXXXXXXXXXXX",
+          "monitoring-results-table-MonitoringResultsTable-XXXXXXXXXXXXX"
+        ]
+      aws_statistics: [Sum]

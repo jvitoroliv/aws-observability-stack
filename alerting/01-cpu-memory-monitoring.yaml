@@ -1,0 +1,658 @@
+# TODO - clean this up later
+
+# note to self: this file handles 01-cpu-memory-monitoring configuration
+
+kube-prometheus-stack:
+  grafana:
+    dashboards:
+      alerts:
+        cpu-memory-monitoing:
+          json: |
+            {
+              "annotations": {
+                "list": [
+                  {
+                    "builtIn": 1,
+                    "datasource": "-- Grafana --",
+                    "enable": true,
+                    "hide": true,
+                    "iconColor": "rgba(0, 211, 255, 1)",
+                    "name": "Annotations & Alerts",
+                    "target": {
+                      "limit": 100,
+                      "matchAny": false,
+                      "tags": [],
+                      "type": "dashboard"
+                    },
+                    "type": "dashboard"
+                  }
+                ]
+              },
+              "description": "Monitors CPU and Memory, both current utilisation and requests",
+              "editable": true,
+              "fiscalYearStartMonth": 0,
+              "gnetId": null,
+              "graphTooltip": 0,
+              "id": 104,
+              "iteration": 1638557862824,
+              "links": [],
+              "liveNow": false,
+              "panels": [
+                {
+                  "alert": {
+                    "alertRuleTags": {
+                      "Resource": "CPU"
+                    },
+                    "conditions": [
+                      {
+                        "evaluator": {
+                          "params": [
+                            0.9
+                          ],
+                          "type": "gt"
+                        },
+                        "operator": {
+                          "type": "and"
+                        },
+                        "query": {
+                          "params": [
+                            "CPU_Utilisation",
+                            "1m",
+                            "now"
+                          ]
+                        },
+                        "reducer": {
+                          "params": [],
+                          "type": "avg"
+                        },
+                        "type": "query"
+                      }
+                    ],
+                    "executionErrorState": "alerting",
+                    "for": "2m",
+                    "frequency": "1m",
+                    "handler": 1,
+                    "message": "Cluster overall CPU utilisation is too high!",
+                    "name": "CPU Utilisation High Alert",
+                    "noDataState": "no_data",
+                    "notifications": [
+                      {
+                        "uid": "team-pagerduty"
+                      }
+                    ]
+                  },
+                  "datasource": null,
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "continuous-GrYlRd"
+                      },
+                      "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 5,
+                        "gradientMode": "scheme",
+                        "hideFrom": {
+                          "legend": false,
+                          "tooltip": false,
+                          "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 1,
+                        "scaleDistribution": {
+                          "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                          "group": "A",
+                          "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                          "mode": "line+area"
+                        }
+                      },
+                      "mappings": [],
+                      "max": 1,
+                      "min": 0,
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "transparent",
+                            "value": null
+                          },
+                          {
+                            "color": "semi-dark-red",
+                            "value": 0.9
+                          }
+                        ]
+                      },
+                      "unit": "percentunit"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 10,
+                    "w": 8,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "id": 1,
+                  "interval": "1m",
+                  "links": [],
+                  "options": {
+                    "legend": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    },
+                    "tooltip": {
+                      "mode": "single"
+                    }
+                  },
+                  "pluginVersion": "8.2.3",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "1 - avg(rate(node_cpu_seconds_total{mode=\"idle\"}[$__rate_interval]))",
+                      "format": "time_series",
+                      "instant": false,
+                      "interval": "",
+                      "intervalFactor": 1,
+                      "legendFormat": "CPU Utilisation",
+                      "refId": "CPU_Utilisation"
+                    }
+                  ],
+                  "thresholds": [
+                    {
+                      "colorMode": "critical",
+                      "op": "gt",
+                      "value": 0.9,
+                      "visible": true
+                    }
+                  ],
+                  "timeFrom": null,
+                  "timeShift": null,
+                  "title": "CPU Utilisation",
+                  "type": "timeseries"
+                },
+                {
+                  "alert": {
+                    "alertRuleTags": {},
+                    "conditions": [
+                      {
+                        "evaluator": {
+                          "params": [
+                            0.9
+                          ],
+                          "type": "gt"
+                        },
+                        "operator": {
+                          "type": "and"
+                        },
+                        "query": {
+                          "params": [
+                            "CPU_Requests",
+                            "1m",
+                            "now"
+                          ]
+                        },
+                        "reducer": {
+                          "params": [],
+                          "type": "last"
+                        },
+                        "type": "query"
+                      }
+                    ],
+                    "executionErrorState": "alerting",
+                    "for": "15m",
+                    "frequency": "10m",
+                    "handler": 1,
+                    "message": "Cluster CPU Requests nearly reaching maximum!",
+                    "name": "CPU Requests Near Max Alert",
+                    "noDataState": "no_data",
+                    "notifications": [
+                      {
+                        "uid": "team-pagerduty"
+                      }
+                    ]
+                  },
+                  "datasource": null,
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "continuous-GrYlRd"
+                      },
+                      "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 5,
+                        "gradientMode": "scheme",
+                        "hideFrom": {
+                          "legend": false,
+                          "tooltip": false,
+                          "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                          "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                          "group": "A",
+                          "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                          "mode": "line+area"
+                        }
+                      },
+                      "mappings": [],
+                      "max": 1,
+                      "min": 0,
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "transparent",
+                            "value": null
+                          },
+                          {
+                            "color": "semi-dark-red",
+                            "value": 0.9
+                          }
+                        ]
+                      },
+                      "unit": "percentunit"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 10,
+                    "w": 8,
+                    "x": 8,
+                    "y": 0
+                  },
+                  "id": 2,
+                  "links": [],
+                  "options": {
+                    "legend": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    },
+                    "tooltip": {
+                      "mode": "single"
+                    }
+                  },
+                  "pluginVersion": "8.2.3",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "sum(namespace_cpu:kube_pod_container_resource_requests:sum) / sum(kube_node_status_allocatable{resource=\"cpu\"})",
+                      "format": "time_series",
+                      "instant": false,
+                      "interval": "",
+                      "intervalFactor": 5,
+                      "legendFormat": "CPU Requests",
+                      "refId": "CPU_Requests"
+                    }
+                  ],
+                  "thresholds": [
+                    {
+                      "colorMode": "critical",
+                      "op": "gt",
+                      "value": 0.9,
+                      "visible": true
+                    }
+                  ],
+                  "timeFrom": null,
+                  "timeShift": null,
+                  "title": "CPU Requests",
+                  "type": "timeseries"
+                },
+                {
+                  "alert": {
+                    "alertRuleTags": {},
+                    "conditions": [
+                      {
+                        "evaluator": {
+                          "params": [
+                            0.9
+                          ],
+                          "type": "gt"
+                        },
+                        "operator": {
+                          "type": "and"
+                        },
+                        "query": {
+                          "params": [
+                            "Memory_Utilisation",
+                            "3m",
+                            "now"
+                          ]
+                        },
+                        "reducer": {
+                          "params": [],
+                          "type": "avg"
+                        },
+                        "type": "query"
+                      }
+                    ],
+                    "executionErrorState": "alerting",
+                    "for": "2m",
+                    "frequency": "1m",
+                    "handler": 1,
+                    "message": "Cluster overall memory utilisation is too high!",
+                    "name": "Memory Utilisation High Alert",
+                    "noDataState": "no_data",
+                    "notifications": [
+                      {
+                        "uid": "team-pagerduty"
+                      }
+                    ]
+                  },
+                  "datasource": null,
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "continuous-GrYlRd"
+                      },
+                      "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 3,
+                        "gradientMode": "scheme",
+                        "hideFrom": {
+                          "legend": false,
+                          "tooltip": false,
+                          "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                          "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                          "group": "A",
+                          "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                          "mode": "line+area"
+                        }
+                      },
+                      "mappings": [],
+                      "max": 1,
+                      "min": 0,
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "transparent",
+                            "value": null
+                          },
+                          {
+                            "color": "semi-dark-red",
+                            "value": 0.9
+                          }
+                        ]
+                      },
+                      "unit": "percentunit"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 10,
+                    "w": 8,
+                    "x": 0,
+                    "y": 10
+                  },
+                  "id": 4,
+                  "links": [],
+                  "options": {
+                    "legend": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    },
+                    "tooltip": {
+                      "mode": "single"
+                    }
+                  },
+                  "pluginVersion": "8.2.3",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "1 - sum(:node_memory_MemAvailable_bytes:sum) / sum(node_memory_MemTotal_bytes)",
+                      "format": "time_series",
+                      "instant": false,
+                      "interval": "",
+                      "intervalFactor": 1,
+                      "legendFormat": "Memory Utilisation",
+                      "refId": "Memory_Utilisation"
+                    }
+                  ],
+                  "thresholds": [
+                    {
+                      "colorMode": "critical",
+                      "op": "gt",
+                      "value": 0.9,
+                      "visible": true
+                    }
+                  ],
+                  "timeFrom": null,
+                  "timeShift": null,
+                  "title": "Memory Utilisation",
+                  "type": "timeseries"
+                },
+                {
+                  "alert": {
+                    "alertRuleTags": {},
+                    "conditions": [
+                      {
+                        "evaluator": {
+                          "params": [
+                            0.9
+                          ],
+                          "type": "gt"
+                        },
+                        "operator": {
+                          "type": "and"
+                        },
+                        "query": {
+                          "params": [
+                            "Memory_Requests",
+                            "1m",
+                            "now"
+                          ]
+                        },
+                        "reducer": {
+                          "params": [],
+                          "type": "last"
+                        },
+                        "type": "query"
+                      }
+                    ],
+                    "executionErrorState": "alerting",
+                    "for": "15m",
+                    "frequency": "10m",
+                    "handler": 1,
+                    "message": "Cluster memory requests are nearly reaching maximum!",
+                    "name": "Memory Requests Near Max Alert",
+                    "noDataState": "no_data",
+                    "notifications": [
+                      {
+                        "uid": "team-pagerduty"
+                      }
+                    ]
+                  },
+                  "datasource": null,
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "continuous-GrYlRd"
+                      },
+                      "custom": {
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 3,
+                        "gradientMode": "scheme",
+                        "hideFrom": {
+                          "legend": false,
+                          "tooltip": false,
+                          "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                          "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                          "group": "A",
+                          "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                          "mode": "line+area"
+                        }
+                      },
+                      "mappings": [],
+                      "max": 1,
+                      "min": 0,
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "transparent",
+                            "value": null
+                          },
+                          {
+                            "color": "semi-dark-red",
+                            "value": 0.9
+                          }
+                        ]
+                      },
+                      "unit": "percentunit"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 10,
+                    "w": 8,
+                    "x": 8,
+                    "y": 10
+                  },
+                  "id": 5,
+                  "links": [],
+                  "options": {
+                    "legend": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "displayMode": "list",
+                      "placement": "bottom"
+                    },
+                    "tooltip": {
+                      "mode": "single"
+                    }
+                  },
+                  "pluginVersion": "8.2.3",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "sum(namespace_memory:kube_pod_container_resource_requests:sum) / sum(kube_node_status_allocatable{resource=\"memory\"})",
+                      "format": "time_series",
+                      "instant": false,
+                      "interval": "",
+                      "intervalFactor": 5,
+                      "legendFormat": "Memory Requests",
+                      "refId": "Memory_Requests"
+                    }
+                  ],
+                  "thresholds": [
+                    {
+                      "colorMode": "critical",
+                      "op": "gt",
+                      "value": 0.9,
+                      "visible": true
+                    }
+                  ],
+                  "timeFrom": null,
+                  "timeShift": null,
+                  "title": "Memory Requests",
+                  "type": "timeseries"
+                }
+              ],
+              "refresh": false,
+              "schemaVersion": 31,
+              "style": "dark",
+              "tags": [],
+              "templating": {
+                "list": [
+                  {
+                    "current": {
+                      "selected": false,
+                      "text": "Prometheus",
+                      "value": "Prometheus"
+                    },
+                    "description": null,
+                    "error": null,
+                    "hide": 0,
+                    "includeAll": false,
+                    "label": null,
+                    "multi": false,
+                    "name": "datasource",
+                    "options": [],
+                    "query": "prometheus",
+                    "queryValue": "",
+                    "refresh": 1,
+                    "regex": "",
+                    "skipUrlSync": false,
+                    "type": "datasource"
+                  }
+                ]
+              },
+              "time": {
+                "from": "now-24h",
+                "to": "now"
+              },
+              "timepicker": {
+                "refresh_intervals": [
+                  "30s",
+                  "1m",
+                  "5m",
+                  "15m",
+                  "30m",
+                  "1h",
+                  "2h",
+                  "1d"
+                ]
+              },
+              "timezone": "",
+              "title": "CPU and Memory Monitor",
+              "uid": "w91W9i2nk",
+              "version": 13
+            }

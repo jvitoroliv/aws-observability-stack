@@ -1,0 +1,35 @@
+# bitbucket-pipelines.yml
+# bitbucket-pipelines configuration
+
+image: example-org/ci-runner
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Deploy Terraform Infrastructure to Test
+          deployment: test
+          script:
+            - terraform init
+            - terraform apply -auto-approve
+    staging:
+      - step:
+          name: Deploy Terraform Infrastructure to Staging
+          deployment: staging
+          script:
+            - terraform init
+            - terraform apply -auto-approve
+    production:
+      - step:
+          name: Deploy Terraform Infrastructure to Production
+          deployment: production
+          script:
+            - terraform init
+            - terraform apply -auto-approve
+
+    destroy:
+      - step:
+          name: Destroy Terraform Infrastructure
+          script:
+            - terraform init
+            - terraform destroy -auto-approve

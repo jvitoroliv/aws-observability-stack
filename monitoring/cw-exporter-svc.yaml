@@ -1,0 +1,19 @@
+# cw-exporter-svc.yaml
+# cw-exporter-svc configuration
+# Maintained by: Platform Engineering
+
+# cw-exporter-svc.yaml — cw-exporter-svc configuration
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudwatch-exporter
+  labels:
+    app: cloudwatch-exporter
+spec:
+  ports:
+  - name: http
+    port: 9106
+    targetPort: 9106
+  selector:
+    app: cloudwatch-exporter

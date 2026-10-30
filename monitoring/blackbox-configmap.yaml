@@ -1,0 +1,28 @@
+# blackbox-configmap.yaml
+# blackbox-configmap configuration
+
+apiVersion: v1
+data:
+  blackbox.yaml: |
+    modules:
+      http_2xx:
+        prober: http
+        timeout: 1s
+        http:
+          valid_http_versions: [HTTP/1.1, HTTP/2]
+          valid_status_codes: []  # Defaults to 2xx
+          method: GET
+          fail_if_ssl: false
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: blackbox
+    meta.helm.sh/release-namespace: observability
+  labels:
+    app.kubernetes.io/instance: blackbox
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: prometheus-blackbox-exporter
+    app.kubernetes.io/version: v0.24.0
+    helm.sh/chart: prometheus-blackbox-exporter-8.2.0
+  name: blackbox-prometheus-blackbox-exporter
+  namespace: observability
